@@ -1,7 +1,7 @@
 package com.giaybac.traprange.parser;
 
 import com.giaybac.traprange.strategies.ParserStrategy;
-import com.giaybac.traprange.strategies.Strategy2;
+import com.giaybac.traprange.strategies.Strategy1;
 
 import java.io.File;
 
@@ -37,8 +37,8 @@ public class InputFileInfo {
 
   public ParserStrategy getParserStrategy(int id) {
     switch(id) {
-      case 2:
-        return new Strategy2();
+      case 1:
+        return new Strategy1();
     }
 
     return null;

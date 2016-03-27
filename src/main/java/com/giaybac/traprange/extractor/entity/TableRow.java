@@ -5,6 +5,8 @@
 */
 package com.giaybac.traprange.extractor.entity;
 
+import com.giaybac.traprange.Main;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,10 +47,10 @@ public class TableRow {
         int lastCellIdx = -1;
         for (TableCell cell : cells) {
             for (int idx = lastCellIdx; idx < cell.getIdx() - 1; idx++) {
-                retVal.append(";");
+                retVal.append(Main.COLUMN_SEPARATOR);
             }
             if (retVal.length() > 0) {
-                retVal.append(";");
+                retVal.append(Main.COLUMN_SEPARATOR);
             }
             retVal.append(cell.getContent());
             lastCellIdx = cell.getIdx();

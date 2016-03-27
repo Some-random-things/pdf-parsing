@@ -1,5 +1,6 @@
 package com.giaybac.traprange.strategies;
 
+import com.giaybac.traprange.Main;
 import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
@@ -18,8 +19,12 @@ import java.util.ArrayList;
 public abstract class ParserStrategy {
   protected abstract int getId();
   protected abstract String parseLine(String line);
-  public abstract String getHeaders();
+  public abstract String getRawHeaders();
   protected abstract int getSkippedLinesCount();
+
+  public String getHeaders() {
+    return getRawHeaders().replace("\n", Main.COLUMN_SEPARATOR);
+  }
 
   public int[] getSkippedLines() {
     return Ints.toArray(

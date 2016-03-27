@@ -113,6 +113,7 @@ public class PDFTableExtractor {
         List<Table> retVal = new ArrayList<>();
         Multimap<Integer, Range<Integer>> pageIdNLineRangesMap = LinkedListMultimap.create();
         Multimap<Integer, TextPosition> pageIdNTextsMap = LinkedListMultimap.create();
+        Multimap<Integer, TextPosition> referenceTextsMap = LinkedListMultimap.create();
         try {
             this.document = PDDocument.load(inputStream);
             for (int pageId = 0; pageId < document.getNumberOfPages(); pageId++) {
@@ -127,10 +128,14 @@ public class PDFTableExtractor {
 
                     pageIdNLineRangesMap.putAll(pageId, lineRanges);
                     pageIdNTextsMap.putAll(pageId, textsByLineRanges);
+
+                    if(referenceTextsMap.isEmpty()) {
+                        referenceTextsMap.putAll(pageId, textsByLineRanges);
+                    }
                 }
             }
             //Calculate columnRanges
-            List<Range<Integer>> columnRanges = getColumnRanges(pageIdNTextsMap.values());
+            List<Range<Integer>> columnRanges = getColumnRanges(referenceTextsMap.values());
             for (int pageId : pageIdNTextsMap.keySet()) {
                 Table table = buildTable(pageId, (List) pageIdNTextsMap.get(pageId), (List) pageIdNLineRangesMap.get(pageId), columnRanges);
                 retVal.add(table);
@@ -173,6 +178,7 @@ public class PDFTableExtractor {
                 rowContent.add(textPosition);
                 idx++;
             } else {
+                System.out.println("ROWIDX: " + rowIdx);
                 TableRow row = buildRow(rowIdx, rowContent, columnTrapRanges);
                 retVal.getRows().add(row);
                 //next row: clear rowContent
@@ -197,6 +203,9 @@ public class PDFTableExtractor {
      * @return
      */
     private TableRow buildRow(int rowIdx, List<TextPosition> rowContent, List<Range<Integer>> columnTrapRanges) {
+        System.out.println("CTR: " + columnTrapRanges.toString());
+
+
         TableRow retVal = new TableRow(rowIdx);
         //Sort rowContent
         Collections.sort(rowContent, new Comparator<TextPosition>() {
@@ -214,9 +223,11 @@ public class PDFTableExtractor {
         int idx = 0;
         int columnIdx = 0;
         List<TextPosition> cellContent = new ArrayList<>();
+        System.out.println("RC S: " + rowContent.size());
         while (idx < rowContent.size()) {
             TextPosition textPosition = rowContent.get(idx);
             Range<Integer> columnTrapRange = columnTrapRanges.get(columnIdx);
+            System.out.println(textPosition.getX() + " CH: " + textPosition.getCharacter());
             Range<Integer> textRange = Range.closed((int) textPosition.getX(),
                     (int) (textPosition.getX() + textPosition.getWidth()));
             if (columnTrapRange.encloses(textRange)) {

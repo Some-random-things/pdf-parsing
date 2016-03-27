@@ -2,7 +2,7 @@ package com.giaybac.traprange;
 
 import com.giaybac.traprange.parser.InputFileInfo;
 import com.giaybac.traprange.parser.Parser;
-import com.giaybac.traprange.strategies.Strategy2;
+import com.giaybac.traprange.strategies.Strategy1;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -21,6 +21,8 @@ import java.util.Iterator;
  * Time: 0:32
  */
 public class Main {
+  public static final String COLUMN_SEPARATOR = "~";
+
   public static void main(String[] args) throws IOException {
     BasicConfigurator.configure();
 
@@ -35,8 +37,8 @@ public class Main {
   private static void parseFile(File pdf) throws IOException {
     System.out.println(pdf);
 
-    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy2(), 6, 8);
-    String result = new Parser(fileInfo).parse().getStringCsv();
+    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy1(), 9, 10);
+    String result = new Parser(fileInfo).applyStrategy(false).parse().getStringCsv();
     System.out.println(result);
   }
 }
