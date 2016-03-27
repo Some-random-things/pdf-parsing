@@ -1,7 +1,8 @@
 package com.giaybac.traprange.parser;
 
-import com.giaybac.traprange.extractor.PDFTableExtractor;
-import com.giaybac.traprange.extractor.entity.Table;
+import com.giaybac.traprange.CustomExtractor;
+import com.giaybac.traprange.Main;
+import com.sun.deploy.util.StringUtils;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class Parser {
   private InputFileInfo inputFileInfo;
-  private List<Table> parsedTables;
+  private List<List<String>> parsedRows;
   private String parsedCsv;
 
   private boolean applyStrategy;
@@ -32,7 +33,7 @@ public class Parser {
     return this;
   }
 
-  public Parser parse() {
+  /*public Parser parse() {
     PDFTableExtractor extractor = new PDFTableExtractor()
         .setSource(inputFileInfo.file)
         .exceptLine(inputFileInfo.strategy.getSkippedLines());
@@ -45,13 +46,38 @@ public class Parser {
 
     parseToCsv();
     return this;
+  }*/
+
+  public Parser parse() {
+    CustomExtractor extractor = new CustomExtractor()
+        .setColumnEdges(new int[]{})
+        .setSource(inputFileInfo.file)
+        .exceptLine(inputFileInfo.strategy.getSkippedLines());
+
+    for(int i = inputFileInfo.startPage-1; i <= inputFileInfo.endPage-1; i++) {
+      extractor.addPage(i);
+    }
+
+    parsedRows = extractor.extract();
+    parseToCsv();
+    return this;
   }
 
-  private void parseToCsv() {
+  /*private void parseToCsv() {
     String result = inputFileInfo.strategy.getHeaders();
     for(Table table : parsedTables) {
       String data = applyStrategy ? inputFileInfo.strategy.applyStrategy(table.toString()) : table.toString();
       result = result + "\n" + data;
+    }
+    parsedCsv = result;
+  }*/
+
+  private void parseToCsv() {
+    String result = inputFileInfo.strategy.getHeaders() + "\n";
+
+    for(List<String> row : parsedRows) {
+      List<String> fineRow = applyStrategy ? inputFileInfo.strategy.applyStrategy(row) : row;
+      result += StringUtils.join(fineRow, Main.COLUMN_SEPARATOR) + "\n";
     }
     parsedCsv = result;
   }

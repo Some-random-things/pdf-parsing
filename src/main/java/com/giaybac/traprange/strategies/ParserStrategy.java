@@ -5,10 +5,8 @@ import com.google.common.collect.ContiguousSet;
 import com.google.common.collect.DiscreteDomain;
 import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
-import com.sun.deploy.util.StringUtils;
-import com.sun.tools.javac.util.List;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +16,7 @@ import java.util.ArrayList;
  */
 public abstract class ParserStrategy {
   protected abstract int getId();
-  protected abstract String parseLine(String line);
+  protected abstract List<String> parseLine(List<String> source);
   public abstract String getRawHeaders();
   protected abstract int getSkippedLinesCount();
 
@@ -31,15 +29,7 @@ public abstract class ParserStrategy {
         ContiguousSet.create(Range.closed(0, getSkippedLinesCount()), DiscreteDomain.integers()));
   }
 
-  public String applyStrategy(String source) {
-    ArrayList<String> parsedLines = new ArrayList<>();
-    String[] lines = source.split("\n");
-    List<String> sourceLines = List.from(lines);
-
-    for (Object sourceLine : sourceLines) {
-      parsedLines.add(parseLine((String) sourceLine));
-    }
-
-    return StringUtils.join(parsedLines, "\n");
+  public List<String> applyStrategy(List<String> source) {
+    return parseLine(source);
   }
 }

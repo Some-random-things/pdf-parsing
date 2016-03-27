@@ -1,10 +1,7 @@
 package com.giaybac.traprange.strategies;
 
-import com.giaybac.traprange.Main;
-import com.sun.deploy.util.StringUtils;
-import com.sun.tools.javac.util.List;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,29 +16,28 @@ public class Strategy1 extends ParserStrategy {
   }
 
   @Override
-  protected String parseLine(String line) {
-    line = line.trim();
-
-    ArrayList<String> parsedFields = new ArrayList<>();
-    String[] fields = line.split(Main.COLUMN_SEPARATOR);
-    List<String> sourceFields = List.from(fields);
+  protected List<String> parseLine(List<String> sourceFields) {
+    if(sourceFields.size() == 0) return sourceFields;
 
     if(sourceFields.get(0).trim().length() == 0) {
-      parsedFields.add(sourceFields.get(1));
+      //parsedFields.add(sourceFields.get(1));
+      String header = "";
+      for (int i = 0; i < sourceFields.size(); i++) {
+        String sf = sourceFields.get(i);
+        header += sf;
+        sourceFields.set(i, "");
+      }
+
+      sourceFields.set(0, header.trim());
     } else {
       for (int i = 0; i < sourceFields.size(); i++) {
         String sourceField = sourceFields.get(i);
         sourceField = sourceField.trim();
-
-        if(i == 1) {
-          parsedFields.addAll(List.from(sourceField.split(" ")));
-        } else {
-          parsedFields.add(sourceField);
-        }
+        sourceFields.set(i, sourceField);
       }
     }
 
-    return StringUtils.join(parsedFields, Main.COLUMN_SEPARATOR);
+    return sourceFields;
   }
 
   @Override
@@ -55,6 +51,6 @@ public class Strategy1 extends ParserStrategy {
 
   @Override
   protected int getSkippedLinesCount() {
-    return 6;
+    return 1;
   }
 }

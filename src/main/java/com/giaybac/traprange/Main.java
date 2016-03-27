@@ -12,6 +12,7 @@ import org.apache.log4j.BasicConfigurator;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Iterator;
  * Time: 0:32
  */
 public class Main {
-  public static final String COLUMN_SEPARATOR = "~";
+  public static final String COLUMN_SEPARATOR = "\t";
 
   public static void main(String[] args) throws IOException {
     BasicConfigurator.configure();
@@ -37,8 +38,12 @@ public class Main {
   private static void parseFile(File pdf) throws IOException {
     System.out.println(pdf);
 
-    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy1(), 9, 10);
-    String result = new Parser(fileInfo).applyStrategy(false).parse().getStringCsv();
-    System.out.println(result);
+    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy1(), 6, 65);
+    //String result = new Parser(fileInfo).applyStrategy(false).parse().getStringCsv();
+    String result = new Parser(fileInfo).applyStrategy(true).parse().getStringCsv();
+
+    try(PrintWriter out = new PrintWriter("/Users/imilka/Downloads/ЭКБ_2015/01/nostrat.txt")) {
+      out.println(result);
+    }
   }
 }

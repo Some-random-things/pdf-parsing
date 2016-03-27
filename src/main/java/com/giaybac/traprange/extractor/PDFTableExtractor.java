@@ -129,13 +129,19 @@ public class PDFTableExtractor {
                     pageIdNLineRangesMap.putAll(pageId, lineRanges);
                     pageIdNTextsMap.putAll(pageId, textsByLineRanges);
 
-                    if(referenceTextsMap.isEmpty()) {
-                        referenceTextsMap.putAll(pageId, textsByLineRanges);
-                    }
+//                    if(referenceTextsMap.isEmpty()) {
+//                        referenceTextsMap.putAll(pageId, textsByLineRanges);
+//                    }
                 }
             }
             //Calculate columnRanges
-            List<Range<Integer>> columnRanges = getColumnRanges(referenceTextsMap.values());
+            //List<Range<Integer>> columnRanges = getColumnRanges(pageIdNTextsMap.values());
+            List<Range<Integer>> columnRanges = new ArrayList<Range<Integer>>();
+            columnRanges.add(Range.closed(32, 157));
+            columnRanges.add(Range.closed(157, 430));
+            columnRanges.add(Range.closed(430, 663));
+            columnRanges.add(Range.closed(663, 743));
+            columnRanges.add(Range.closed(743, 878));
             for (int pageId : pageIdNTextsMap.keySet()) {
                 Table table = buildTable(pageId, (List) pageIdNTextsMap.get(pageId), (List) pageIdNLineRangesMap.get(pageId), columnRanges);
                 retVal.add(table);
