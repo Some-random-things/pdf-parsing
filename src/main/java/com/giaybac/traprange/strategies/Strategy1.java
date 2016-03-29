@@ -48,9 +48,4 @@ public class Strategy1 extends ParserStrategy {
         "Отличительный знак\n" +
         "Предприятие изготовитель/калькодерж.";
   }
-
-  @Override
-  protected int getSkippedLinesCount() {
-    return 1;
-  }
 }

@@ -40,13 +40,9 @@ public class CustomExtractor {
 
   public CustomExtractor setColumnEdges(int[] edges) {
     columnRanges.clear();
-
-
-    columnRanges.add(Range.closed(56,127));
-    columnRanges.add(Range.closed(127, 277));
-    columnRanges.add(Range.closed(277, 402));
-    columnRanges.add(Range.closed(402, 453));
-    columnRanges.add(Range.closed(453, 528));
+    for(int i = 0; i < edges.length-1; i++) {
+      columnRanges.add(Range.closed((int) (edges[i]/1.045), (int) (edges[i+1]/1.045)));
+    }
 
     return this;
   }
@@ -130,10 +126,10 @@ public class CustomExtractor {
         rowContent.add(textPosition);
         idx++;
       } else {
-        /*System.out.println("=== ROW " + rowIdx);
+        System.out.println("=== ROW " + rowIdx);
         for(TextPosition pos : rowContent) {
-          System.out.print(pos.getCharacter() + "[" + pos.getX() + "]");
-        }*/
+          //System.out.print(pos.getCharacter() + "[" + pos.getX() + "]");
+        }
 
         parseRow(rowContent);
 
@@ -156,7 +152,7 @@ public class CustomExtractor {
       int columnId = getColumnIdForText(x);
 
       if(columnId == -1) continue;
-      //System.out.print(text.getCharacter() + "[" + columnId + "]");
+      System.out.print(text.getCharacter() + "[" + columnId + "]");
       String col = row.get(columnId);
       row.set(columnId, col + text.getCharacter());
     }
