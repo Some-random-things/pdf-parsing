@@ -146,7 +146,7 @@ public class Parser {
           int s = i + 1;
           ht = parsedRows.get(s).get(0);
           while (ht.equals("HEADER")) {
-            headers += " " + stringFromColumns(parsedRows.get(s));
+            headers += stringFromColumns(parsedRows.get(s));
             parsedRows.remove(s);
             ht = parsedRows.get(s).get(0);
             System.out.println("HT:" + ht);
@@ -157,8 +157,9 @@ public class Parser {
           }
           List<String> newHeaders = new ArrayList<>(Arrays.asList(inputFileInfo.strategy.getHeaders()));
 
-          String[] hdrs = headers.split(" [0-9].");
+          String[] hdrs = headers.split("[0-9].");
           for (String hdr : hdrs) {
+            if(hdr.trim().length() == 0) continue;
             hdr = hdr.replace("1. ", "");
             newHeaders.add(hdr.trim());
           }
