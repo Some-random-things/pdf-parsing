@@ -43,6 +43,34 @@ public class InputFileInfo {
     this.skippedLinesCount = skippedLinesCount;
   }
 
+  public InputFileInfo() {
+
+  }
+
+  public void setFile(File file) {
+    this.file = file;
+  }
+
+  public void setStrategy(ParserStrategy strategy) {
+    this.strategy = strategy;
+  }
+
+  public void setStartPage(int startPage) {
+    this.startPage = startPage;
+  }
+
+  public void setEndPage(int endPage) {
+    this.endPage = endPage;
+  }
+
+  public void setColumnEdges(int[] columnEdges) {
+    this.columnEdges = columnEdges;
+  }
+
+  public void setSkippedLinesCount(int skippedLinesCount) {
+    this.skippedLinesCount = skippedLinesCount;
+  }
+
   public ParserStrategy getParserStrategy(int id) {
     switch(id) {
       case 1:

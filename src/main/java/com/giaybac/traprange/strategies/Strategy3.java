@@ -20,7 +20,8 @@ public class Strategy3 extends ParserStrategy {
     if(sourceFields.size() == 0) return sourceFields;
 
     if(sourceFields.get(0).trim().length() == 0 && sourceFields.get(1).trim().length() != 0) {
-      System.out.println("HEADER");
+      System.out.println("WHOLE");
+      // whole line
       String header = "";
       for (int i = 0; i < sourceFields.size(); i++) {
         String sf = sourceFields.get(i);
@@ -29,15 +30,6 @@ public class Strategy3 extends ParserStrategy {
       }
 
       sourceFields.set(0, header.trim());
-    } else if(sourceFields.get(1).trim().length() == 0) {
-      String header = "";
-      for (int i = 0; i < sourceFields.size(); i++) {
-        String sf = sourceFields.get(i);
-        header += sf;
-        sourceFields.set(i, "");
-      }
-
-      sourceFields.set(1, header.trim());
     } else {
       System.out.println("NOWHOLE");
       for (int i = 0; i < sourceFields.size(); i++) {
@@ -46,6 +38,34 @@ public class Strategy3 extends ParserStrategy {
         sourceFields.set(i, sourceField);
       }
     }
+
+//    if(sourceFields.get(0).trim().length() == 0 && sourceFields.get(1).trim().length() != 0) {
+//      System.out.println("HEADER");
+//      String header = "";
+//      for (int i = 0; i < sourceFields.size(); i++) {
+//        String sf = sourceFields.get(i);
+//        header += sf;
+//        sourceFields.set(i, "");
+//      }
+//
+//      sourceFields.set(0, header.trim());
+//    } else if(sourceFields.get(1).trim().length() == 0) {
+//      String header = "";
+//      for (int i = 0; i < sourceFields.size(); i++) {
+//        String sf = sourceFields.get(i);
+//        header += sf;
+//        sourceFields.set(i, "");
+//      }
+//
+//      sourceFields.set(1, header.trim());
+//    } else {
+//      System.out.println("NOWHOLE");
+//      for (int i = 0; i < sourceFields.size(); i++) {
+//        String sourceField = sourceFields.get(i);
+//        sourceField = sourceField.trim();
+//        sourceFields.set(i, sourceField);
+//      }
+//    }
 
     return sourceFields;
   }
