@@ -1,7 +1,11 @@
 package com.giaybac.traprange.parser;
 
 import com.giaybac.traprange.CustomExtractor;
+import com.giaybac.traprange.Main;
+import com.sun.deploy.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -71,30 +75,36 @@ public class Parser {
   }*/
 
   private void parseToCsv() {
-    String result = inputFileInfo.strategy.getHeaders() + "\n";
+    String result = "";
 
     long start = System.currentTimeMillis();
 
     if(applyStrategy) {
-      for (int i = 0; i < parsedRows.size();) {
+      for (int i = 0; i < parsedRows.size();i++) {
         List<String> row = parsedRows.get(i);
         inputFileInfo.strategy.applyStrategy(row);
 
-        if (row.get(0).length() == 0 && i != 0) {
-          List<String> previousRow = parsedRows.get(i-1);
-          for (int i1 = 0; i1 < row.size(); i1++) {
-            String col = row.get(i1);
-            String previousRowCol = previousRow.get(i1);
-            previousRow.set(i1, (previousRowCol + " " + col).trim());
+        if(row.get(0).trim().length() == 0 && row.get(1).trim().length() != 0) {
+          int s = i+1; int fcl = 0;
+          String headers = row.get(1);
+          while(fcl == 0) {
+            inputFileInfo.strategy.applyStrategy(parsedRows.get(s));
+            headers += " " + parsedRows.get(s).get(1);
+
+            parsedRows.remove(s);
+            fcl = parsedRows.get(s).get(0).trim().length();
           }
 
-          parsedRows.remove(row);
-        } else if(row.get(1).length() == 0 && !parsedRows.get(i+1).get(0).trim().equals("1")) {
-          List<String> previousRow = parsedRows.get(i-1);
-          previousRow.add(row.get(0));
-          parsedRows.remove(row);
-        } else {
-          i++;
+          row.set(1, "");
+          List<String> newHeaders = new ArrayList<>(Arrays.asList(inputFileInfo.strategy.getHeaders()));
+
+          String[] hdrs = headers.split("; [0-9]. ");
+          for(String hdr : hdrs) {
+            hdr = hdr.replace("1. ", "");
+            newHeaders.add(hdr);
+          }
+
+          row.set(0, StringUtils.join(newHeaders, Main.COLUMN_SEPARATOR));
         }
       }
     }

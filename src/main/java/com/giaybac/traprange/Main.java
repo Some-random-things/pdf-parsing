@@ -2,7 +2,7 @@ package com.giaybac.traprange;
 
 import com.giaybac.traprange.parser.InputFileInfo;
 import com.giaybac.traprange.parser.Parser;
-import com.giaybac.traprange.strategies.Strategy2;
+import com.giaybac.traprange.strategies.Strategy3;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOCase;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
@@ -29,7 +29,7 @@ public class Main {
 
     String[] extensions = new String[] {"pdf"};
     IOFileFilter filter = new SuffixFileFilter(extensions, IOCase.INSENSITIVE);
-    Iterator iter = FileUtils.iterateFiles(new File("/Users/imilka/IdeaProjects/pdf-parsing/source/02"), filter, DirectoryFileFilter.DIRECTORY);
+    Iterator iter = FileUtils.iterateFiles(new File("/Users/imilka/IdeaProjects/pdf-parsing/source/03"), filter, DirectoryFileFilter.DIRECTORY);
 
     File test = (File) iter.next();
     parseFile(test);
@@ -38,7 +38,7 @@ public class Main {
   private static void parseFile(File pdf) throws IOException {
     System.out.println(pdf);
 
-    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy2(), 7, 324, new int[]{38,75,178,342,387,429,562,636,703,769,839}, 7);
+    InputFileInfo fileInfo = new InputFileInfo(pdf, new Strategy3(), 5, 7, new int[]{44,80,206,371,420,470,533,590,689,780,832}, 10);
     //String result = new Parser(fileInfo).applyStrategy(false).parse().getStringCsv();
     String result = new Parser(fileInfo).applyStrategy(true).parse().getStringCsv();
 
