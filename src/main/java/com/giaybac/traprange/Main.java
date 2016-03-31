@@ -27,7 +27,7 @@ public class Main {
   public static void main(String[] args) throws IOException {
     BasicConfigurator.configure();
 
-    String filePath = "/Users/imilka/IdeaProjects/pdf-parsing/source/04";
+    String filePath = "/Users/imilka/IdeaProjects/pdf-parsing/source/21";
 
     String[] extensions = new String[] {"pdf"};
     IOFileFilter filter = new SuffixFileFilter(extensions, IOCase.INSENSITIVE);
@@ -54,10 +54,11 @@ public class Main {
     InputFileInfo fileInfo = new InputFileInfo();
     fileInfo.setFile(pdf);
     fileInfo.setStrategy(new Strategy3());
-    fileInfo.setColumnEdges(new int[]{44,96,199,371,421,471,543,615,687,756,832});
-    fileInfo.setSkippedLinesCount(3);
-    fileInfo.setStartPage(7);
-    fileInfo.setEndPage(7);
+    fileInfo.setColumnEdges(new int[]{44,83,214,304,354,404,465,585,703,773,832});
+    fileInfo.setSkippedLinesCount(7);
+    fileInfo.setStartPage(4);
+    fileInfo.setEndPage(15);
+    // 46
 
     String result = new Parser(fileInfo).applyStrategy(true).parse().getStringCsv();
 

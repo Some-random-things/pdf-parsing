@@ -126,7 +126,7 @@ public class Parser {
       // fix kanal ntipa
       for (int i = 0; i < parsedRows.size(); ) {
         List<String> row = parsedRows.get(i);
-        if (row.get(0).contains("канал") && i != 0) {
+        if ((row.get(0).contains("канал")) && i != 0) {
           List<String> previousRow = parsedRows.get(i - 1);
           previousRow.set(1, previousRow.get(1) + " " + row.get(0));
           parsedRows.remove(row);
@@ -147,6 +147,7 @@ public class Parser {
           ht = parsedRows.get(s).get(0);
           while (ht.equals("HEADER")) {
             headers += stringFromColumns(parsedRows.get(s));
+            System.out.println("=== HEADERS: " + headers);
             parsedRows.remove(s);
             ht = parsedRows.get(s).get(0);
             System.out.println("HT:" + ht);
@@ -157,8 +158,9 @@ public class Parser {
           }
           List<String> newHeaders = new ArrayList<>(Arrays.asList(inputFileInfo.strategy.getHeaders()));
 
-          String[] hdrs = headers.split("[0-9].");
+          String[] hdrs = headers.split("[0-9]\\.");
           for (String hdr : hdrs) {
+            System.out.println("=== SPLIITED: " + hdr);
             if(hdr.trim().length() == 0) continue;
             hdr = hdr.replace("1. ", "");
             newHeaders.add(hdr.trim());
@@ -204,5 +206,17 @@ public class Parser {
 
   public String getStringCsv() {
     return parsedCsv;
+  }
+
+  public static boolean isUpperCase(String s)
+  {
+    for (int i=0; i<s.length(); i++)
+    {
+      if (!Character.isUpperCase(s.charAt(i)))
+      {
+        return false;
+      }
+    }
+    return true;
   }
 }

@@ -19,7 +19,9 @@ public class Strategy3 extends ParserStrategy {
   protected List<String> parseLine(List<String> sourceFields) {
     if(sourceFields.size() == 0) return sourceFields;
 
-    if(sourceFields.get(0).trim().length() == 0 && sourceFields.get(1).trim().length() != 0) {
+    if(sourceFields.get(0).trim().length() == 0
+        && sourceFields.get(1).trim().length() != 0
+        && Character.isDigit(sourceFields.get(1).charAt(0))) {
       System.out.println("WHOLE");
       // whole line
       String header = "";
